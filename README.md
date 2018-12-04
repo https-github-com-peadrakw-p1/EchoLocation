@@ -33,3 +33,13 @@ Once the droplet has been created I needed to install the following in order to 
 ```
 sudo apt-get install node-js
 ```
+
+
+#Usefull Links
+
+
+https://github.com/mdeyo/alexa-node-ROS
+
+
+https://wisecodeck.blogspot.com/2016/08/how-to-building-amazon-alexa-skill-with.html
+
