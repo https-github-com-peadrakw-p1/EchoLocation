@@ -44,6 +44,5 @@ https://github.com/mdeyo/alexa-node-ROS
 https://wisecodeck.blogspot.com/2016/08/how-to-building-amazon-alexa-skill-with.html
 
 
-
 https://stackoverflow.com/questions/10702105/detecting-led-object-status-from-image
 

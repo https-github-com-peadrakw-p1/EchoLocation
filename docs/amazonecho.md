@@ -24,3 +24,26 @@ This guest code expires on **12-14-2018** at **1:00 AM**.
 Now you have the guest code connect to the Welcome_to_UVa_Wireless and use the code.
 
 Use the Amazon Alexa app to connect to the wifi. Follow the instructions in the app to change the wifi access.
+
+
+## Creating a skill
+
+Log onto the amazon portal and create a developer account
+
+Enter a skill name
+
+Choose a skill name
+
+And select cusotm template
+
+Select Custom
+
+The next thing you need to do is enter a invocation name.
+
+this is the name which will be used to invoke our skill.
+
+Ours is "follow me"
+
+The next thing to do is to create intents and slots
+
+s
