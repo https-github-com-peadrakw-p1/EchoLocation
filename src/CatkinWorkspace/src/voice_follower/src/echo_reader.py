@@ -3,6 +3,8 @@
 # Imports
 import rospy
 import cv2
+import copy
+import math
 import numpy as np
 from std_msgs.msg import Float64
 
@@ -16,14 +18,25 @@ def shutdown_sequence():
 class CameraProcessing:
     # On class creation
     def __init__(self):
-	    # Open a camera device
+        # Open a camera device
         self.cap = cv2.VideoCapture(0)
+
+        # Capture a single frame from the camera
+        ret, frame = self.cap.read()
+
+        # Calculate the length of the frame
+        self.x_length = frame.shape[1]
+        self.y_length = -1 * frame.shape[0]
+
+        # Find the center of the object
+        self.center = [self.x_length / 2.0, self.y_length / 2.0]
 
     def ProcessImage(self):
         # Capture frame-by-frame
-        ret, frame = self.cap.read()
+        ret, orig_frame = self.cap.read()
 
         # Remove the blue from the image
+        frame = copy.deepcopy(orig_frame)
         frame[:,:,0] = 0
 
         # Blur the image
@@ -40,18 +53,34 @@ class CameraProcessing:
         thresh = 185
         (thresh, im_bw) = cv2.threshold(im_gray, thresh, 255, cv2.THRESH_BINARY)
 
-        box1 = im_bw[0:240,0:320]
-        box2 = im_bw[0:240,320:640]
-        box3 = im_bw[240:480,0:320]
-        box4 = im_bw[240:480,320:640]
+        # Find the x and y positions of all the white pixels
+        position_white_pixels = np.argwhere(im_bw)
+        av_w_pixel = np.mean(position_white_pixels, axis=0)
 
-        # Find which quater it is in
-        quadrents = [np.mean(box1), np.mean(box2), np.mean(box3), np.mean(box4)]
-        quater = np.argmax(quadrents)
-        rospy.loginfo(str(rospy.get_name()) + ": " + str(quater))
-        
-        # Return the direction
-        return quater
+        # X is height, Y is width
+        av_x = av_w_pixel[1]
+        av_y = -1 * av_w_pixel[0]
+
+        # Only while we are getting useful informaiton
+        if (math.isnan(av_x) == False) and (math.isnan(av_y) == False):
+
+            # Calculate the exact angle
+            deltax = self.center[0] - av_x
+            deltay = self.center[1] - av_y
+            angle = math.atan2(deltay, deltax)
+
+            # Offset to make top of image 0 degrees
+            angle = angle + math.pi/2.0
+            angle = -1 * math.atan2(math.sin(angle), math.cos(angle))
+
+            # Display the position information
+            rospy.loginfo(str(rospy.get_name()) + ": Center Point: " + str(self.center))
+            rospy.loginfo(str(rospy.get_name()) + ": Center Light: " + str(av_w_pixel))
+
+            # Display the angle
+            rospy.loginfo(str(rospy.get_name()) + ": Angle: " + str(math.degrees(angle)))
+
+        return angle
 
     def DestoryObject(self):
         # When everything done, release the capture
@@ -70,7 +99,7 @@ if __name__=="__main__":
     pub_dir = rospy.Publisher('/raw_direction', Float64, queue_size=10)
     
     # Setting the rate
-    set_rate = 5
+    set_rate = 6
     rate = rospy.Rate(set_rate)
 
     # Creating the filter object
