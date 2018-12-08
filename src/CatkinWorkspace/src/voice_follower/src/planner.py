@@ -100,8 +100,8 @@ if __name__=="__main__":
     rospy.on_shutdown(shutdown_sequence)
 
     # Subscribers and publishers
-    subscriber = rospy.Subscriber('/object_distance', Int, scanCallBack)
-    subscriber = rospy.Subscriber('/clean_direction', Float64, scanCallBack)
+    subscriber = rospy.Subscriber('/obstacle_info', Int, scanCallBack)
+    subscriber = rospy.Subscriber('/final_direction', Float64, scanCallBack)
     
     # Setting the rate
     set_rate = 20
