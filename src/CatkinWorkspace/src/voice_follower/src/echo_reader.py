@@ -8,9 +8,7 @@ from std_msgs.msg import Float64
 
 
 # On shutdown run this command
-def shutdown_sequence(cls_obj):
-    # Close the camera processing node
-    cls_obj.DestoryObject()
+def shutdown_sequence():
     # Do something
     rospy.loginfo(str(rospy.get_name()) + ": Shutting Down ")
 
@@ -50,13 +48,8 @@ class CameraProcessing:
         # Find which quater it is in
         quadrents = [np.mean(box1), np.mean(box2), np.mean(box3), np.mean(box4)]
         quater = np.argmax(quadrents)
-        print(quater)
+        rospy.loginfo(str(rospy.get_name()) + ": " + str(quater))
         
-        # Display the image in binary
-        cv2.imshow('frame',im_bw)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
         # Return the direction
         return quater
 
@@ -81,16 +74,19 @@ if __name__=="__main__":
     rate = rospy.Rate(set_rate)
 
     # Creating the filter object
-    CP_Obg = CameraProcessing()
+    CP_Obj = CameraProcessing()
 
     # The main ros loop
     while not rospy.is_shutdown():
 
         # Process an image
-        direction = KF_Obj.ProcessImage()
+        direction = CP_Obj.ProcessImage()
 
         # Publish the direction
-        pub_dir.publish(Flaot64(direction))
+        pub_dir.publish(Float64(direction))
 
         # Sleep
         rate.sleep()
+
+    # Destroy the camera object
+    CP_Obj.DestoryObject()

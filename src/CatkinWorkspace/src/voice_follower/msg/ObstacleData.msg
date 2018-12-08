@@ -1,0 +1,2 @@
+int8 obstacle_distance
+int8 turn_direction

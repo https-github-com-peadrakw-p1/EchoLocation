@@ -6,10 +6,15 @@ import cv2
 import enum
 import random
 import array
+import copy
+import time
 import numpy as np
-from std_msgs.msg import Float64
 
-scanner_readings = array.array('i',(0 for i in range(0,90)))
+from sensor_msgs.msg import LaserScan
+from voice_follower.msg import ObstacleData
+from std_msgs.msg import Int8
+
+global scanner_readings
 
 class DistancesEnum(enum.IntEnum):
     CLOSE = 0
@@ -23,7 +28,7 @@ class DirectionEnum(enum.IntEnum):
     RIGHT = 2
 
 
-def shutdown_sequence(cls_obj):
+def shutdown_sequence():
     # Do something
     rospy.loginfo(str(rospy.get_name()) + ": Shutting Down ")
 
@@ -87,8 +92,12 @@ if __name__=="__main__":
     rospy.init_node('obstacle_detection')
     rospy.on_shutdown(shutdown_sequence)
 
+    # Initilize scanner_readings 
+    scanner_readings = array.array('i',(0 for i in range(0,90)))
+
     # Subscribers and publishers
-    subscriber = rospy.Subscriber('/scan', LaserScan, scanCallBack)
+    sub_scn = rospy.Subscriber('/scan', LaserScan, scanCallBack)
+    pub_odt = rospy.Publisher('/obstacle_info', ObstacleData, queue_size=10)
     
     # Setting the rate
     set_rate = 20
@@ -103,13 +112,27 @@ if __name__=="__main__":
     # Remember the state of the robot
     current_readings = DistancesEnum.FAR
 
+    # Create the message we are going to use to send information
+    obs_data = ObstacleData()
+  
+
     # Ros Loop
     while not rospy.is_shutdown():
 
         # Check for obstacles
-        obsticle_distance = OD_Obj.CheckForObsticles(scanner_readings)
-        turn_direction = OD_Obj.CheckSpace(scanner_readings)
-        print("Turn Direction: " + str(turn_direction))
+        o_distance = OD_Obj.CheckForObsticles(scanner_readings)
+        t_direction = OD_Obj.CheckSpace(scanner_readings)
+
+        # Print out the readings
+        rospy.loginfo(str(rospy.get_name()) + ": Obstacle Distance - " + str(o_distance))
+        rospy.loginfo(str(rospy.get_name()) + ": Turn Direction: " + str(t_direction))
+
+        # Create the message for publishing
+        obs_data.obstacle_distance = o_distance
+        obs_data.turn_direction = t_direction
+
+        # Publish the message
+        pub_odt.publish(obs_data)
 
         # Sleep
         rate.sleep()
