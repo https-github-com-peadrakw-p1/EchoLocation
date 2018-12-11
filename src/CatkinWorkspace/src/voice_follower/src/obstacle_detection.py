@@ -3,11 +3,12 @@
 # Imports
 import rospy
 import cv2
+import copy
 import enum
 import random
-import array
-import copy
 import time
+import array
+import math
 import numpy as np
 
 from sensor_msgs.msg import LaserScan
@@ -25,7 +26,7 @@ class DistancesEnum(enum.IntEnum):
 class DirectionEnum(enum.IntEnum):
     STRAIGHT = 0
     LEFT = 1
-    RIGHT = 2
+    RIGHT = -1
 
 
 def shutdown_sequence():
@@ -36,50 +37,56 @@ def shutdown_sequence():
 def scanCallBack(ros_data):
     global scanner_readings
 
-    # Create a deep copy of all scan data
+    # Make a deep copy of the data so that we dont change scanner readings
     data_copy = copy.deepcopy(list(ros_data.ranges))
 
-    # Copy only the readings from -45 degrees to 45 degrees
-    scanner_readings = data_copy[359-45:359] + (data_copy[0:45])
+    # Copy only the center readings
+    mid_point = int(len(data_copy) / 2)
+    scanner_readings = data_copy[mid_point - 40:mid_point + 40]
 
     # Change all values which are 0 to inf
     for i in range(0,len(scanner_readings)):
-        if scanner_readings[i] < 0.01:
+        if math.isnan(scanner_readings[i]):
             scanner_readings[i] = float('inf')
 
 
+
 class ObsticleDetection:
+
     def CheckForObsticles(self, readings):
 
         # Calculate the closest obsticle in my center view
         mid_point = int(len(readings) / 2)
-        center_readings = copy.deepcopy(readings[mid_point - 10:mid_point + 10])
+        center_readings = copy.deepcopy(readings)
         center_sorted_readings = sorted(center_readings)
         center_threeSmallestReadings = [center_sorted_readings[0], center_sorted_readings[1], center_sorted_readings[2]] 
         center_closest_obsticle = np.nanmean(center_threeSmallestReadings);
 
-        # Calculate the closest obsticle in all my view
-        # sorted_readings = sorted(copy.deepcopy(readings))
-        # threeSmallestReadings = [sorted_readings[0], sorted_readings[1], sorted_readings[2]] 
-        # all_closest_obsticle = np.nanmean(threeSmallestReadings);
+        # Find the minimum value of all readings
         all_closest_obsticle = np.min(readings)
 
-        if all_closest_obsticle > 1.5:
+
+        # Return how far away an obstical is
+        if all_closest_obsticle > 0.9:
             return DistancesEnum.FAR
-        elif center_closest_obsticle < 0.5:
+        elif center_closest_obsticle < 0.8:
             return DistancesEnum.CLOSE
         else:
             return DistancesEnum.MEDIUM
 
     def CheckSpace(self, readings):
-        object_direction = 0
+        # Initilize the object direction to straight ahead
+        object_direction = DirectionEnum.STRAIGHT
 
-        for i in range(0,45):
-            if readings[i] < 1:
-                object_direction = 45 - i
+        # Loop through the array
+        for i in range(0, len(readings)/2):
+            # If its in the first half turn left
+            if (readings[i] < 1) or (readings[i] == float('inf')):
+                object_direction = DirectionEnum.LEFT
                 break 
-            if readings[-i] < 1:
-                object_direction = -45 + i
+            # If its in the second half turn right
+            if (readings[-i] < 1) or (readings[i] == float('inf')):
+                object_direction = DirectionEnum.RIGHT
                 break
 
         return object_direction
@@ -92,13 +99,13 @@ if __name__=="__main__":
     rospy.init_node('obstacle_detection')
     rospy.on_shutdown(shutdown_sequence)
 
-    # Initilize scanner_readings 
-    scanner_readings = array.array('i',(0 for i in range(0,90)))
-
     # Subscribers and publishers
     sub_scn = rospy.Subscriber('/scan', LaserScan, scanCallBack)
     pub_odt = rospy.Publisher('/obstacle_info', ObstacleData, queue_size=10)
-    
+
+    # Initilize the scanner readings (incase you never get any)
+    scanner_readings = array.array('i',(0 for i in range(0,90)))
+
     # Setting the rate
     set_rate = 20
     rate = rospy.Rate(set_rate)
@@ -109,13 +116,9 @@ if __name__=="__main__":
     # Creating all the robot objects
     OD_Obj = ObsticleDetection()
 
-    # Remember the state of the robot
-    current_readings = DistancesEnum.FAR
-
     # Create the message we are going to use to send information
     obs_data = ObstacleData()
   
-
     # Ros Loop
     while not rospy.is_shutdown():
 

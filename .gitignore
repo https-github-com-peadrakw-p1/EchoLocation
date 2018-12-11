@@ -1,6 +1,25 @@
+# Remove Apple files
 .DS_Store
 
+# Remove the ROS build files
 src/CatkinWorkspace/build/
 src/CatkinWorkspace/devel/
 
-results/
+# Remove all keynote presentations
+*.key
+
+# Remove all videos
+*.mp4
+*.mov
+
+# Remove all images
+*.jpeg
+*.jpg
+*.png
+*.gif
+
+# Remove all audio clips
+*m4a
+
+# Remove any misc files
+*.xml

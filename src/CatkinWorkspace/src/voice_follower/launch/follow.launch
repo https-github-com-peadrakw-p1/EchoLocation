@@ -1,9 +1,9 @@
 <launch>
-	<node name="direction_cleaner" pkg="voice_follower" type="direction_cleaner.py" output="screen />
+	<node name="direction_filter" pkg="voice_follower" type="direction_filter.py" output="screen" />
 
-	<node name="echo_reader" pkg="voice_follower" type="echo_reader.py" output="screen />
+	<node name="echo_reader" pkg="voice_follower" type="echo_reader.py" output="screen" />
 
-	<node name="obstacle_detection" pkg="voice_follower" type="obstacle_detection.py" output="screen />
+	<node name="obstacle_detection" pkg="voice_follower" type="obstacle_detection.py" output="screen" />
 
-	<node name="planner" pkg="voice_follower" type="planner.py" output="screen />
+	<node name="planner" pkg="voice_follower" type="planner.py" output="screen" />
 </launch>

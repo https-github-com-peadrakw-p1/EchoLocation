@@ -19,7 +19,7 @@ class CameraProcessing:
     # On class creation
     def __init__(self):
         # Open a camera device
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(1)
 
         # Capture a single frame from the camera
         ret, frame = self.cap.read()
@@ -30,6 +30,9 @@ class CameraProcessing:
 
         # Find the center of the object
         self.center = [self.x_length / 2.0, self.y_length / 2.0]
+
+        # Declare the final result
+        self.angle = 0
 
     def ProcessImage(self):
         # Capture frame-by-frame
@@ -67,20 +70,21 @@ class CameraProcessing:
             # Calculate the exact angle
             deltax = self.center[0] - av_x
             deltay = self.center[1] - av_y
-            angle = math.atan2(deltay, deltax)
+            self.angle = math.atan2(deltay, deltax)
 
             # Offset to make top of image 0 degrees
-            angle = angle + math.pi/2.0
-            angle = -1 * math.atan2(math.sin(angle), math.cos(angle))
+            self.angle = self.angle + math.pi/2.0
+            self.angle = math.atan2(math.sin(self.angle), math.cos(self.angle))
 
             # Display the position information
             rospy.loginfo(str(rospy.get_name()) + ": Center Point: " + str(self.center))
             rospy.loginfo(str(rospy.get_name()) + ": Center Light: " + str(av_w_pixel))
 
             # Display the angle
-            rospy.loginfo(str(rospy.get_name()) + ": Angle: " + str(math.degrees(angle)))
+            rospy.loginfo(str(rospy.get_name()) + ": Angle: " + str(math.degrees(self.angle)))
 
-        return angle
+
+        return self.angle
 
     def DestoryObject(self):
         # When everything done, release the capture
