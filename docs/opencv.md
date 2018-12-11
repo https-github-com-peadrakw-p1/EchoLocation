@@ -26,7 +26,7 @@ Next lets include video io packages
 ```
 $ sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
 $ sudo apt-get install libxvidcore-dev libx264-dev
-sudo apt-get install libv4l-dev
+$ sudo apt-get install libv4l-dev
 ```
 
 OpenCV’s highgui module relies on the GTK library for GUI operations. INstall that next
@@ -73,8 +73,6 @@ We need to install opencl headers used by opencv
 ```
 $ sudo apt-get install opencl-
 $ sudo apt-get install ocl-icd-libopencl1
-```
-
 ```
 
 Make sure you have numpy installed
