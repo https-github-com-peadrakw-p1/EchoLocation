@@ -1,6 +1,6 @@
 # ROS Code
 
-This code contains the planner, planner, obstacle avoidance, image processing and Kalman filter. Each of the nodes can be run individually or as a whole. All the details as to how to run this project are detailed below.
+This code contains the planner, planner, obstacle avoidance, image processing, and Kalman filter. Each of the nodes can be run individually or as a whole. All the details as to how to run this project are detailed below.
 
 ## Running the code
 
@@ -22,7 +22,7 @@ If you use ZSH use:
 $ source devel/setup.zsh
 ```
 
-Running the code together can be done using
+Running the code together can be done using:
 
 ```
 $ roslaunch voice_follower follow.launch
@@ -42,4 +42,4 @@ This code requires you have the following packages installed:
 * OpenCV
 * Numpy
 
-Numpy can be installed using pip. OpenCV is slightly more difficuly however there is a document in the docs folder describing the whole process. ROS has very detailed documentation on how to install it.
+Numpy can be installed using pip. OpenCV is slightly more difficult however there is a document in the docs folder describing the whole process. ROS has very detailed documentation on how to install it.

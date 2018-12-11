@@ -20,7 +20,7 @@ python server_conncetion_test.y'
 
 ## Prequrequistis
 
-NodeJS is required to be install in order to run this
+NodeJS is required to be installed in order to run this
 
 ```
 sudo apt-get install node-js
