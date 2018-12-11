@@ -16,7 +16,7 @@ You can then run the python script on your computer to access the web server:
 python server_conncetion_test.y'
 ```
 
-** This has only been tested on python2 **
+**This has only been tested on python2**
 
 ## Prequrequistis
 

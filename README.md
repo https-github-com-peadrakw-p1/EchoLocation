@@ -12,3 +12,7 @@ This project contains a number of sections; each is listed below:
 * [Report](./report) - Contains the final report.
 * [Source](./src) - Contains the final source code.
 * [Final Video](./video) - Contains the final video.
+
+## Video
+
+[Final Autonomous Mobile Robots Project](https://youtu.be/jPWCccZzm4U)
