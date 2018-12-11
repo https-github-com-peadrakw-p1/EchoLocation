@@ -23,3 +23,6 @@ src/CatkinWorkspace/devel/
 
 # Remove any misc files
 *.xml
+
+# Removes any download links
+Archive.zip

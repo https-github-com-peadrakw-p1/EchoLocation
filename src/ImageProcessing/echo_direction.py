@@ -36,7 +36,7 @@ while(True):
 	frame = copy.deepcopy(orig_frame)
 	frame[:,:,0] = 0
 
-	# Blur the image
+	# Blur the image (could be done with a larger kernal size)
 	kernel = np.ones((5,5),np.float32)/25
 	dst1 = cv2.filter2D(frame,-1,kernel)
 	dst2 = cv2.filter2D(dst1,-1,kernel)

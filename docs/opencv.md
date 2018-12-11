@@ -126,3 +126,7 @@ $ python
 '3.4.1'
 >>> quit()
 ```
+
+## Authors
+
+* **Carl Hildebrandt** - *Initial work* - [hildebrandt-carl](https://github.com/hildebrandt-carl)

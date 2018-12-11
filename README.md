@@ -1,48 +1,17 @@
 # EchoLocation
-This is the final project for Autonomous Mobile Robots course.
 
-Connecting to the server
+This is the final project for Autonomous Mobile Robots at the Unversity of Virginia fall 2018. The final project was integrating an Amazon Echo Dot with a mobile robot so that the robot could track and drive towards a sound source. The robot included obstacle avoidance and image processing to get the angle from the Amazon Echo Dot.
 
+## Project Sections
 
+This project contains a number of sections, each is listed below:
 
-Running the server
-```
-node server.js
-```
+* [Documents](./docs/) - Contains usefull documents about installing required libraries and working with the Amazon Echo Dot.
+* [Miscellaneous](./misc/) - Contains videos and images from testing as well as edited images and videos used in the final presentation and video.
+* [Presentation](./presentation) - Contains the final presentation.
+* [Source](./src) - Contains the final source code.
+* [Final Video](./video) - Contains the final video.
 
-Running the python script
-```
-python server_conncetion_test.y'
-```
+## Authors
 
-Right now this is only tested on python2
-
-
-
-# Server
-
-The server is currently running on digital ocean. The servers details are as follows:
-```
-ssh root@159.65.234.255
-password: AMR_Group4
-```
-
-## Updating the server
-
-Once the droplet has been created I needed to install the following in order to allow the server to work.
-```
-sudo apt-get install node-js
-```
-
-
-#Usefull Links
-
-
-https://github.com/mdeyo/alexa-node-ROS
-
-
-https://wisecodeck.blogspot.com/2016/08/how-to-building-amazon-alexa-skill-with.html
-
-
-https://stackoverflow.com/questions/10702105/detecting-led-object-status-from-image
-
+* **Carl Hildebrandt** - *Initial work* - [hildebrandt-carl](https://github.com/hildebrandt-carl)

@@ -46,4 +46,6 @@ Ours is "follow me"
 
 The next thing to do is to create intents and slots
 
-s
+## Authors
+
+* **Carl Hildebrandt** - *Initial work* - [hildebrandt-carl](https://github.com/hildebrandt-carl)
