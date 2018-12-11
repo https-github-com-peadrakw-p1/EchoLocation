@@ -11,7 +11,3 @@ This project contains a number of sections, each is listed below:
 * [Presentation](./presentation) - Contains the final presentation.
 * [Source](./src) - Contains the final source code.
 * [Final Video](./video) - Contains the final video.
-
-## Authors
-
-* **Carl Hildebrandt** - *Initial work* - [hildebrandt-carl](https://github.com/hildebrandt-carl)
