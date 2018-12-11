@@ -7,8 +7,7 @@ This folder contains useful documents for getting this project up and running or
 
 Below are each of the documents
 
-* [Documents](./docs/) - Contains useful documents about installing required libraries and working with the Amazon Echo Dot.
-* [Miscellaneous](./misc/) - Contains videos and images from testing as well as edited images and videos used in the final presentation and video.
-* [Presentation](./presentation) - Contains the final presentation.
-* [Source](./src) - Contains the final source code.
-* [Final Video](./video) - Contains the final video.
+* [Amazon Echo Documentation](./amazonecho.md/) - Contains setting up and creating your own custom skills.
+* [Installing Open CV](./opencv.md) - Full tutorial to install opencv on Ubuntu 18.04.
+* [Running A Websever](./server.md) - Contains how to connect and run the websever.
+* [Useful Links](./usefullinks.md) - Contains links used in this project.
